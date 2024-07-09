@@ -1,10 +1,7 @@
 package com.mrlubert.prisoncontrol;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -22,7 +19,6 @@ public class NPCRanks implements Listener {
 	@SuppressWarnings("unused")
 	private Gamble2Utils gamble2Utils;
 	private Main main;
-	private List<ItemStack> hoes;
 	public HashMap<String, String> commands;
 	public HashMap<String, ItemStack> items;
 
@@ -31,8 +27,6 @@ public class NPCRanks implements Listener {
 		this.items = new HashMap<>();
 		commands = new HashMap<>();
 		loadRewardMaps();
-		this.hoes = Arrays.asList(new ItemStack[] { this.items.get("Phoenix_Hoe"), this.items.get("Turtle_Hoe"),
-				this.items.get("Rabbit_Hoe"), this.items.get("Seagull_Hoe"), this.items.get("Myra_Hoe") });
 
 	}
 
@@ -101,8 +95,9 @@ public class NPCRanks implements Listener {
 		if (group == null) {
 			return false;
 		}
-		player.sendMessage("Debug: " + group + " Checked Returns: " + player.hasPermission("group." + group));
-		return player.hasPermission("group." + group);
+
+		player.sendMessage("Debug: " + group + " Checked Returns: " + player.hasPermission("displayname." + group));
+		return player.hasPermission("displayname." + group);
 	}
 
 	@EventHandler
@@ -110,17 +105,17 @@ public class NPCRanks implements Listener {
 		Player p = e.getClicker();
 		NPC npc = e.getNPC();
 		if (npc.getName().equalsIgnoreCase("oisketchio")) {
-			if (p.getInventory().contains(this.hoes.get(3))) {
+			if (p.getInventory().contains(items.get("Seagull_Hoe"))) {
 				if (isPlayerInGroup(p, "Seagull") || isPlayerInGroup(p, "Rabbit") || isPlayerInGroup(p, "Turtle")
 						|| isPlayerInGroup(p, "Phoenix") || isPlayerInGroup(p, "Myra")) {
 					p.sendMessage(ChatColor.RED + "You already have Seagull or higher.");
 					return;
 				}
-				int slot = p.getInventory().first(this.hoes.get(3));
+				int slot = p.getInventory().first(items.get("Seagull_Hoe"));
 				if (p.getInventory().getItem(slot).getAmount() == 1) {
 					p.getInventory().setItem(slot, null);
 				} else {
-					p.getInventory().getItem(slot).setAmount(p.getInventory().getItem(slot).getAmount() - 1);
+					p.getInventory().getItem(slot).setAmount(0);
 				}
 				p.updateInventory();
 				this.main.getServer().dispatchCommand(Bukkit.getConsoleSender(),
@@ -128,17 +123,17 @@ public class NPCRanks implements Listener {
 				p.sendMessage(ChatColor.GREEN + "You have claimed your Seagull rank.");
 				return;
 			}
-			if (p.getInventory().contains(this.hoes.get(2))) {
+			if (p.getInventory().contains(items.get("Rabbit_Hoe"))) {
 				if (isPlayerInGroup(p, "Rabbit") || isPlayerInGroup(p, "Turtle") || isPlayerInGroup(p, "Phoenix")
 						|| isPlayerInGroup(p, "Myra")) {
 					p.sendMessage(ChatColor.RED + "You already have Rabbit or higher.");
 					return;
 				}
-				int slot = p.getInventory().first(this.hoes.get(2));
+				int slot = p.getInventory().first(items.get("Rabbit_Hoe"));
 				if (p.getInventory().getItem(slot).getAmount() == 1) {
 					p.getInventory().setItem(slot, null);
 				} else {
-					p.getInventory().getItem(slot).setAmount(p.getInventory().getItem(slot).getAmount() - 1);
+					p.getInventory().getItem(slot).setAmount(0);
 				}
 				p.updateInventory();
 				String s = this.commands.get("Rabbit").replace("[user]", p.getName());
@@ -148,60 +143,72 @@ public class NPCRanks implements Listener {
 				p.sendMessage(ChatColor.GREEN + "You have claimed your Rabbit rank.");
 				return;
 			}
-			if (p.getInventory().contains(this.hoes.get(1))) {
+			if (p.getInventory().contains(items.get("Turtle_Hoe"))) {
 				if (isPlayerInGroup(p, "Turtle") || isPlayerInGroup(p, "Phoenix") || isPlayerInGroup(p, "Myra")) {
 					p.sendMessage(ChatColor.RED + "You already have Turtle or higher.");
 					return;
 				}
-				int slot = p.getInventory().first(this.hoes.get(1));
+				int slot = p.getInventory().first(items.get("Turtle_Hoe"));
 				if (p.getInventory().getItem(slot).getAmount() == 1) {
 					p.getInventory().setItem(slot, null);
 				} else {
-					p.getInventory().getItem(slot).setAmount(p.getInventory().getItem(slot).getAmount() - 1);
+					p.getInventory().getItem(slot).setAmount(0);
 				}
 				p.updateInventory();
 				String s = this.commands.get("Turtle").replace("[user]", p.getName());
 				this.main.getServer().dispatchCommand(this.main.getServer().getConsoleSender(), s);
 				this.main.getServer().dispatchCommand(Bukkit.getConsoleSender(),
 						"lp user " + p.getName() + " parent remove Rabbit");
+				this.main.getServer().dispatchCommand(Bukkit.getConsoleSender(),
+						"lp user " + p.getName() + " parent remove Seagull");
 				p.sendMessage(ChatColor.GREEN + "You have claimed your Turtle rank.");
 				return;
 			}
-			if (p.getInventory().contains(this.hoes.get(0))) {
+			if (p.getInventory().contains(items.get("Phoenix_Hoe"))) {
 				if (isPlayerInGroup(p, "Phoenix") || isPlayerInGroup(p, "Myra")) {
 					p.sendMessage(ChatColor.RED + "You already have Phoenix or Higher.");
 					return;
 				}
-				int slot = p.getInventory().first(this.hoes.get(0));
+				int slot = p.getInventory().first(items.get("Phoenix_Hoe"));
 				if (p.getInventory().getItem(slot).getAmount() == 1) {
 					p.getInventory().setItem(slot, null);
 				} else {
-					p.getInventory().getItem(slot).setAmount(p.getInventory().getItem(slot).getAmount() - 1);
+					p.getInventory().getItem(slot).setAmount(0);
 				}
 				p.updateInventory();
 				String s = this.commands.get("Phoenix").replace("[user]", p.getName());
 				this.main.getServer().dispatchCommand(this.main.getServer().getConsoleSender(), s);
 				this.main.getServer().dispatchCommand(Bukkit.getConsoleSender(),
 						"lp user " + p.getName() + " parent remove Turtle");
+				this.main.getServer().dispatchCommand(Bukkit.getConsoleSender(),
+						"lp user " + p.getName() + " parent remove Rabbit");
+				this.main.getServer().dispatchCommand(Bukkit.getConsoleSender(),
+						"lp user " + p.getName() + " parent remove Seagull");
 				p.sendMessage(ChatColor.GREEN + "You have claimed your Phoenix rank.");
 				return;
 			}
-			if (p.getInventory().contains(this.hoes.get(4))) {
+			if (p.getInventory().contains(items.get("Myra_Hoe"))) {
 				if (isPlayerInGroup(p, "Myra")) {
 					p.sendMessage(ChatColor.RED + "You already have Myra.");
 					return;
 				}
-				int slot = p.getInventory().first(this.hoes.get(4));
+				int slot = p.getInventory().first(items.get("Myra_Hoe"));
 				if (p.getInventory().getItem(slot).getAmount() == 1) {
 					p.getInventory().setItem(slot, null);
 				} else {
-					p.getInventory().getItem(slot).setAmount(p.getInventory().getItem(slot).getAmount() - 1);
+					p.getInventory().getItem(slot).setAmount(0);
 				}
 				p.updateInventory();
 				String s = this.commands.get("Myra").replace("[user]", p.getName());
 				this.main.getServer().dispatchCommand(this.main.getServer().getConsoleSender(), s);
 				this.main.getServer().dispatchCommand(Bukkit.getConsoleSender(),
 						"lp user " + p.getName() + " parent remove Phoenix");
+				this.main.getServer().dispatchCommand(Bukkit.getConsoleSender(),
+						"lp user " + p.getName() + " parent remove Turtle");
+				this.main.getServer().dispatchCommand(Bukkit.getConsoleSender(),
+						"lp user " + p.getName() + " parent remove Rabbit");
+				this.main.getServer().dispatchCommand(Bukkit.getConsoleSender(),
+						"lp user " + p.getName() + " parent remove Seagull");
 				p.sendMessage(ChatColor.GREEN + "You have claimed your Myra rank.");
 				return;
 			}
