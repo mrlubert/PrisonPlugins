@@ -1,0 +1,13 @@
+name: PrisonControl
+main: com.mrlubert.prisoncontrol.Main
+version: 1.2.1
+api-version: '1.20'
+description: PrisonControl Plugin
+author: MrLubert
+depend: ['WorldGuard']
+softdepend: ['AutoPickup']
+commands:
+  cell:
+    description: Teleport to your cell.
+  kappak:
+    description: Used to give rank hoes.
