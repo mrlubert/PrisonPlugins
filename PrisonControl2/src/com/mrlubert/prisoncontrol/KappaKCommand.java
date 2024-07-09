@@ -93,6 +93,16 @@ public class KappaKCommand implements CommandExecutor {
 							.addItem(new ItemStack[] { (ItemStack) this.items.get("Prestige_Token") });
 
 					return false;
+					
+				case -12624445:
+					if (!str.equals("reset")) {
+						break;
+					}
+					Bukkit.getPlayer(arguments[0].toLowerCase()).setAbsorptionAmount(0);
+					Bukkit.getPlayer(arguments[0].toLowerCase()).sendMessage("Reset Ranks Check");
+
+					return false;
+					
 				case -938645478:
 					if (!str.equals("rabbit"))
 						break;
