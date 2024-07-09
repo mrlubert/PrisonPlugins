@@ -18,7 +18,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.npc.NPC;
 
-public class NPCRightClick2 implements Listener {
+public class NPCRanks implements Listener {
 	@SuppressWarnings("unused")
 	private Gamble2Utils gamble2Utils;
 	private Main main;
@@ -26,7 +26,7 @@ public class NPCRightClick2 implements Listener {
 	public HashMap<String, String> commands;
 	public HashMap<String, ItemStack> items;
 
-	public NPCRightClick2(Main plugin) {
+	public NPCRanks(Main plugin) {
 		this.main = plugin;
 		this.items = new HashMap<>();
 		commands = new HashMap<>();
