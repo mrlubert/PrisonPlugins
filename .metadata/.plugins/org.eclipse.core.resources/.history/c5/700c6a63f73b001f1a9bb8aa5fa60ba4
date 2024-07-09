@@ -1,0 +1,65 @@
+/*    */ package my.mc47y.me.KappaKorrectional.utils;
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ class null
+/*    */   implements Runnable
+/*    */ {
+/*    */   public void run() {
+/* 57 */     XPMineUtils.this.playersUsedMine.clear();
+/*    */   }
+/*    */ }
+
+
+/* Location:              C:\Users\Nick\Desktop\KappaKorrectional.jar!\my\mc47y\me\KappaKorrectiona\\utils\XPMineUtils$1.class
+ * Java compiler version: 16 (60.0)
+ * JD-Core Version:       1.1.3
+ */

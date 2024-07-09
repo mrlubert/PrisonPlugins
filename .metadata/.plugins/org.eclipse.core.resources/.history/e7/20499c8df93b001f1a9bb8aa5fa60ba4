@@ -1,0 +1,134 @@
+/*     */ package my.mc47y.me.KappaKorrectional.cmds;
+/*     */ 
+/*     */ import my.mc47y.me.KappaKorrectional.Main;
+/*     */ import org.bukkit.ChatColor;
+/*     */ import org.bukkit.Material;
+/*     */ import org.bukkit.command.Command;
+/*     */ import org.bukkit.command.CommandExecutor;
+/*     */ import org.bukkit.command.CommandSender;
+/*     */ import org.bukkit.entity.Player;
+/*     */ import org.bukkit.inventory.ItemStack;
+/*     */ 
+/*     */ public class BlockCommand
+/*     */   implements CommandExecutor
+/*     */ {
+/*     */   public BlockCommand(Main plugin) {}
+/*     */   
+/*     */   public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+/*  37 */     if (!(sender instanceof Player)) {
+/*  38 */       sender.sendMessage(ChatColor.RED + "You must be a player to use this command.");
+/*  39 */       return true;
+/*     */     } 
+/*  41 */     if (!sender.hasPermission("KappaK.block")) {
+/*  42 */       sender.sendMessage(ChatColor.RED + "You don't have permission for that command.");
+/*  43 */       return true;
+/*     */     } 
+/*  45 */     Player player = (Player)sender;
+/*     */     try {
+/*  47 */       int amountOfDiamonds = 0;
+/*  48 */       int amountOfEmeralds = 0;
+/*  49 */       int amountOfIron = 0;
+/*  50 */       int amountOfGold = 0;
+/*  51 */       int amountOfGlowstone = 0;
+/*  52 */       int coal = 0;
+/*  53 */       int redstone = 0;
+/*  54 */       int lapis = 0;
+/*  55 */       int itemsChanged = 0; byte b; int i; ItemStack[] arrayOfItemStack1;
+/*  56 */       for (i = (arrayOfItemStack1 = player.getInventory().getContents()).length, b = 0; b < i; ) { ItemStack is = arrayOfItemStack1[b];
+/*  57 */         if (is != null) {
+/*  58 */           if (is.getType() == Material.DIAMOND) {
+/*  59 */             player.getInventory().remove(is);
+/*  60 */             amountOfDiamonds += is.getAmount();
+/*     */           } 
+/*  62 */           if (is.getType() == Material.EMERALD) {
+/*  63 */             amountOfEmeralds += is.getAmount();
+/*  64 */             player.getInventory().remove(is);
+/*     */           } 
+/*  66 */           if (is.getType() == Material.IRON_INGOT) {
+/*  67 */             player.getInventory().remove(is);
+/*  68 */             amountOfIron += is.getAmount();
+/*     */           } 
+/*  70 */           if (is.getType() == Material.GLOWSTONE_DUST) {
+/*  71 */             amountOfGlowstone += is.getAmount();
+/*  72 */             player.getInventory().remove(is);
+/*     */           } 
+/*  74 */           if (is.getType() == Material.GOLD_INGOT) {
+/*  75 */             player.getInventory().remove(is);
+/*  76 */             amountOfGold += is.getAmount();
+/*     */           } 
+/*  78 */           if (is.getType() == Material.COAL) {
+/*  79 */             player.getInventory().remove(is);
+/*  80 */             coal += is.getAmount();
+/*     */           } 
+/*  82 */           if (is.getType() == Material.REDSTONE) {
+/*  83 */             redstone += is.getAmount();
+/*  84 */             player.getInventory().remove(is);
+/*     */           } 
+/*  86 */           if (is.getType() == Material.LAPIS_LAZULI)
+/*  87 */           { player.getInventory().remove(is);
+/*  88 */             lapis += is.getAmount(); } 
+/*  89 */         }  b = (byte)(b + 1); }
+/*  90 */        player.updateInventory();
+/*  91 */       itemsChanged = amountOfDiamonds + amountOfEmeralds + amountOfGlowstone + amountOfGold + amountOfIron + coal + redstone + lapis;
+/*  92 */       int diamondsToTransform = amountOfDiamonds / 9;
+/*  93 */       int diamondOverflow = amountOfDiamonds % 9;
+/*  94 */       int emeraldsToTransform = amountOfEmeralds / 9;
+/*  95 */       int emeraldsOverflow = amountOfEmeralds % 9;
+/*  96 */       int ironToTransform = amountOfIron / 9;
+/*  97 */       int ironOverflow = amountOfIron % 9;
+/*  98 */       int goldToTransform = amountOfGold / 9;
+/*  99 */       int goldOverflow = amountOfGold % 9;
+/* 100 */       int glowstoneToTransform = amountOfGlowstone / 4;
+/* 101 */       int glowstoneOverflow = amountOfGlowstone % 4;
+/* 102 */       int rT = redstone / 9;
+/* 103 */       int rO = redstone % 9;
+/* 104 */       int lT = lapis / 9;
+/* 105 */       int lO = lapis % 9;
+/* 106 */       int cT = coal / 9;
+/* 107 */       int cO = coal % 9;
+/* 108 */       ItemStack[] arritemStack2 = new ItemStack[10];
+/* 109 */       arritemStack2[0] = new ItemStack((diamondsToTransform > 0) ? Material.DIAMOND_BLOCK : Material.AIR, diamondsToTransform);
+/* 110 */       arritemStack2[1] = new ItemStack((emeraldsToTransform > 0) ? Material.EMERALD_BLOCK : Material.AIR, emeraldsToTransform);
+/* 111 */       arritemStack2[2] = new ItemStack((diamondOverflow > 0) ? Material.DIAMOND : Material.AIR, diamondOverflow);
+/* 112 */       arritemStack2[3] = new ItemStack((emeraldsOverflow > 0) ? Material.EMERALD : Material.AIR, emeraldsOverflow);
+/* 113 */       arritemStack2[4] = new ItemStack((ironToTransform > 0) ? Material.IRON_BLOCK : Material.AIR, ironToTransform);
+/* 114 */       arritemStack2[5] = new ItemStack((goldToTransform > 0) ? Material.GOLD_BLOCK : Material.AIR, goldToTransform);
+/* 115 */       arritemStack2[6] = new ItemStack((glowstoneToTransform > 0) ? Material.GLOWSTONE : Material.AIR, glowstoneToTransform);
+/* 116 */       arritemStack2[7] = new ItemStack((ironOverflow > 0) ? Material.IRON_INGOT : Material.AIR, ironOverflow);
+/* 117 */       arritemStack2[8] = new ItemStack((goldOverflow > 0) ? Material.GOLD_INGOT : Material.AIR, goldOverflow);
+/* 118 */       arritemStack2[9] = new ItemStack((glowstoneOverflow > 0) ? Material.GLOWSTONE_DUST : Material.AIR, glowstoneOverflow);
+/* 119 */       player.getInventory().addItem(arritemStack2);
+/* 120 */       ItemStack[] arritemStack3 = new ItemStack[1];
+/* 121 */       arritemStack3[0] = new ItemStack((rT > 0) ? Material.REDSTONE_BLOCK : Material.AIR, rT);
+/* 122 */       player.getInventory().addItem(arritemStack3);
+/* 123 */       ItemStack[] arritemStack4 = new ItemStack[1];
+/* 124 */       arritemStack4[0] = new ItemStack((lT > 0) ? Material.LAPIS_BLOCK : Material.AIR, lT);
+/* 125 */       player.getInventory().addItem(arritemStack4);
+/* 126 */       ItemStack[] arritemStack5 = new ItemStack[1];
+/* 127 */       arritemStack5[0] = new ItemStack((cT > 0) ? Material.COAL_BLOCK : Material.AIR, cT);
+/* 128 */       player.getInventory().addItem(arritemStack5);
+/* 129 */       ItemStack[] arritemStack6 = new ItemStack[1];
+/* 130 */       arritemStack6[0] = new ItemStack((rO > 0) ? Material.REDSTONE : Material.AIR, rO);
+/* 131 */       player.getInventory().addItem(arritemStack6);
+/* 132 */       ItemStack[] arritemStack7 = new ItemStack[1];
+/* 133 */       arritemStack7[0] = new ItemStack((lO > 0) ? Material.LAPIS_LAZULI : Material.AIR, lO);
+/* 134 */       player.getInventory().addItem(arritemStack7);
+/* 135 */       ItemStack[] arritemStack8 = new ItemStack[1];
+/* 136 */       arritemStack8[0] = new ItemStack((cO > 0) ? Material.COAL : Material.AIR, cO);
+/* 137 */       player.getInventory().addItem(arritemStack8);
+/* 138 */       player.sendMessage(ChatColor.LIGHT_PURPLE + String.valueOf(itemsChanged -= diamondOverflow + emeraldsOverflow + ironOverflow + goldOverflow + glowstoneOverflow + rO + cO + lO) + ChatColor.RED + " items compacted into " + ChatColor.LIGHT_PURPLE + (diamondsToTransform + emeraldsToTransform + glowstoneToTransform + goldToTransform + ironToTransform + lT + rT + cT) + ChatColor.RED + " blocks!");
+/* 139 */       player.updateInventory();
+/*     */     }
+/* 141 */     catch (Exception e) {
+/* 142 */       e.printStackTrace();
+/* 143 */       return true;
+/*     */     } 
+/* 145 */     return true;
+/*     */   }
+/*     */ }
+
+
+/* Location:              C:\Users\Nick\Desktop\KappaKorrectional.jar!\my\mc47y\me\KappaKorrectional\cmds\BlockCommand.class
+ * Java compiler version: 16 (60.0)
+ * JD-Core Version:       1.1.3
+ */

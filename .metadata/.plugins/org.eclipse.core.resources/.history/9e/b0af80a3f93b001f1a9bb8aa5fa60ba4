@@ -1,0 +1,86 @@
+/*    */ package my.mc47y.me.KappaKorrectional.events;
+/*    */ 
+/*    */ import java.util.HashSet;
+/*    */ import java.util.List;
+/*    */ import me.clip.ezprestige.events.EZPrestigeEvent;
+/*    */ import me.wiefferink.areashop.AreaShop;
+/*    */ import me.wiefferink.areashop.regions.RentRegion;
+/*    */ import my.mc47y.me.KappaKorrectional.Main;
+/*    */ import my.mc47y.me.KappaKorrectional.utils.GambleUtils;
+/*    */ import org.bukkit.Bukkit;
+/*    */ import org.bukkit.Material;
+/*    */ import org.bukkit.OfflinePlayer;
+/*    */ import org.bukkit.command.CommandSender;
+/*    */ import org.bukkit.entity.Player;
+/*    */ import org.bukkit.event.EventHandler;
+/*    */ import org.bukkit.event.Listener;
+/*    */ import org.bukkit.plugin.Plugin;
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ public class EZPrestige
+/*    */   implements Listener
+/*    */ {
+/*    */   private Main main;
+/*    */   private AreaShop as;
+/*    */   private GambleUtils gambleUtils;
+/*    */   
+/*    */   public EZPrestige(Main plugin) {
+/* 46 */     this.main = plugin;
+/* 47 */     this.as = getAreaShop();
+/* 48 */     this.gambleUtils = this.main.gambleUtils;
+/*    */   }
+/*    */   
+/*    */   private static AreaShop getAreaShop() {
+/* 52 */     Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("AreaShop");
+/* 53 */     if (plugin == null || !(plugin instanceof AreaShop)) {
+/* 54 */       return null;
+/*    */     }
+/* 56 */     return (AreaShop)plugin;
+/*    */   }
+/*    */   
+/*    */   @EventHandler
+/*    */   public void onPrestige(EZPrestigeEvent e) {
+/* 61 */     Player player = e.getPlayer();
+/* 62 */     HashSet<RentRegion> rentRegions = new HashSet<>();
+/* 63 */     List<RentRegion> lr = this.as.getFileManager().getRents();
+/* 64 */     int slot = player.getInventory().first(Material.DIAMOND_HORSE_ARMOR);
+/* 65 */     if (slot == -1) {
+/* 66 */       for (RentRegion region : lr) {
+/* 67 */         if (!region.isOwner((OfflinePlayer)player))
+/*    */           continue; 
+/* 69 */         rentRegions.add(region);
+/*    */       } 
+/* 71 */       for (RentRegion r : rentRegions) {
+/* 72 */         r.unRent(true, (CommandSender)player);
+/*    */       }
+/* 74 */       this.main.getServer().dispatchCommand((CommandSender)Bukkit.getConsoleSender(), "clearinventory " + player.getName());
+/*    */     } else {
+/* 76 */       this.gambleUtils.prestigeTokened.add(player.getName());
+/* 77 */       player.getInventory().clear(slot);
+/*    */     } 
+/*    */   }
+/*    */ }
+
+
+/* Location:              C:\Users\Nick\Desktop\KappaKorrectional.jar!\my\mc47y\me\KappaKorrectional\events\EZPrestige.class
+ * Java compiler version: 16 (60.0)
+ * JD-Core Version:       1.1.3
+ */

@@ -1,0 +1,84 @@
+/*    */ package my.mc47y.me.KappaKorrectional.events;
+/*    */ 
+/*    */ import java.util.HashSet;
+/*    */ import java.util.List;
+/*    */ import me.clip.ezrankspro.events.RankupEvent;
+/*    */ import me.wiefferink.areashop.AreaShop;
+/*    */ import me.wiefferink.areashop.regions.RentRegion;
+/*    */ import my.mc47y.me.KappaKorrectional.Main;
+/*    */ import my.mc47y.me.KappaKorrectional.utils.GambleUtils;
+/*    */ import org.bukkit.Bukkit;
+/*    */ import org.bukkit.OfflinePlayer;
+/*    */ import org.bukkit.command.CommandSender;
+/*    */ import org.bukkit.entity.Player;
+/*    */ import org.bukkit.event.EventHandler;
+/*    */ import org.bukkit.event.Listener;
+/*    */ import org.bukkit.plugin.Plugin;
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ public class EZRankup
+/*    */   implements Listener
+/*    */ {
+/*    */   private Main main;
+/*    */   private AreaShop as;
+/*    */   private GambleUtils gambleUtils;
+/*    */   
+/*    */   public EZRankup(Main plugin) {
+/* 43 */     this.main = plugin;
+/* 44 */     this.as = getAreaShop();
+/* 45 */     this.gambleUtils = this.main.gambleUtils;
+/*    */   }
+/*    */   
+/*    */   private static AreaShop getAreaShop() {
+/* 49 */     Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("AreaShop");
+/* 50 */     if (plugin == null || !(plugin instanceof AreaShop)) {
+/* 51 */       return null;
+/*    */     }
+/* 53 */     return (AreaShop)plugin;
+/*    */   }
+/*    */   
+/*    */   @EventHandler
+/*    */   public void onRankup(RankupEvent e) {
+/* 58 */     Player player = e.getPlayer();
+/* 59 */     if (e.getNewRank().equalsIgnoreCase("Panda") || e.getNewRank().equalsIgnoreCase("Lion") || 
+/* 60 */       e.getNewRank().equalsIgnoreCase("Dragon")) {
+/* 61 */       if (this.gambleUtils.prestigeTokened.contains(player.getName())) {
+/* 62 */         if (e.getNewRank().equalsIgnoreCase("Dragon")) {
+/* 63 */           this.gambleUtils.prestigeTokened.remove(player.getName());
+/*    */         }
+/*    */         return;
+/*    */       } 
+/* 67 */       HashSet<RentRegion> rentRegions = new HashSet<>();
+/* 68 */       List<RentRegion> lr = this.as.getFileManager().getRents();
+/* 69 */       for (RentRegion region : lr) {
+/* 70 */         if (!region.isOwner((OfflinePlayer)player))
+/*    */           continue; 
+/* 72 */         rentRegions.add(region);
+/*    */       } 
+/* 74 */       for (RentRegion r : rentRegions)
+/* 75 */         r.unRent(true, (CommandSender)player); 
+/*    */     } 
+/*    */   }
+/*    */ }
+
+
+/* Location:              C:\Users\Nick\Desktop\KappaKorrectional.jar!\my\mc47y\me\KappaKorrectional\events\EZRankup.class
+ * Java compiler version: 16 (60.0)
+ * JD-Core Version:       1.1.3
+ */

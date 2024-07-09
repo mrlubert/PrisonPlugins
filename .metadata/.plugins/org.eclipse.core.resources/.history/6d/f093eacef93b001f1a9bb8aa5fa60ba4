@@ -1,0 +1,53 @@
+/*    */ package my.mc47y.me.KappaKorrectional.events;
+/*    */ 
+/*    */ import java.util.Iterator;
+/*    */ import my.mc47y.me.KappaKorrectional.Main;
+/*    */ import org.bukkit.entity.Player;
+/*    */ import org.bukkit.event.EventHandler;
+/*    */ import org.bukkit.event.Listener;
+/*    */ import org.bukkit.event.inventory.InventoryDragEvent;
+/*    */ import org.bukkit.event.inventory.InventoryType;
+/*    */ import org.bukkit.inventory.Inventory;
+/*    */ 
+/*    */ 
+/*    */ public class InventoryDrag
+/*    */   implements Listener
+/*    */ {
+/*    */   public InventoryDrag(Main plugin) {}
+/*    */   
+/*    */   @EventHandler
+/*    */   public void onDrag(InventoryDragEvent e) {
+/* 20 */     Player p = (Player)e.getWhoClicked();
+/* 21 */     Inventory to = e.getInventory();
+/* 22 */     if (to.getType() != InventoryType.ENDER_CHEST) {
+/*    */       return;
+/*    */     }
+/* 25 */     if (p.hasPermission("ezprestige.prestige.20")) {
+/*    */       return;
+/*    */     }
+/* 28 */     for (int i = 19; i > 0; ) {
+/* 29 */       if (!p.hasPermission("ezprestige.prestige." + i)) { i--; continue; }
+/* 30 */        Iterator<Integer> iterator = e.getInventorySlots().iterator();
+/* 31 */       while (iterator.hasNext()) {
+/* 32 */         int j = ((Integer)iterator.next()).intValue();
+/* 33 */         if (j <= i - 1)
+/* 34 */           continue;  e.setCancelled(true);
+/*    */         return;
+/*    */       } 
+/*    */       return;
+/*    */     } 
+/* 39 */     Iterator<Integer> inv = e.getInventorySlots().iterator();
+/* 40 */     while (inv.hasNext()) {
+/* 41 */       int inv2 = ((Integer)inv.next()).intValue();
+/* 42 */       if (inv2 <= 0)
+/* 43 */         continue;  e.setCancelled(true);
+/*    */       return;
+/*    */     } 
+/*    */   }
+/*    */ }
+
+
+/* Location:              C:\Users\Nick\Desktop\KappaKorrectional.jar!\my\mc47y\me\KappaKorrectional\events\InventoryDrag.class
+ * Java compiler version: 16 (60.0)
+ * JD-Core Version:       1.1.3
+ */

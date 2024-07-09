@@ -1,0 +1,87 @@
+/*    */ package my.mc47y.me.KappaKorrectional.utils;
+/*    */ 
+/*    */ import java.util.Arrays;
+/*    */ import java.util.Calendar;
+/*    */ import java.util.HashMap;
+/*    */ import java.util.List;
+/*    */ import my.mc47y.me.KappaKorrectional.Main;
+/*    */ import org.bukkit.command.CommandSender;
+/*    */ import org.bukkit.entity.Player;
+/*    */ import org.bukkit.plugin.Plugin;
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ public class XPMineUtils
+/*    */ {
+/*    */   private Main main;
+/*    */   public HashMap<Player, Integer> playersInMine;
+/*    */   public List<Player> playersUsedMine;
+/*    */   private long ticksTillMidnight;
+/*    */   private Calendar midnight;
+/*    */   
+/*    */   public XPMineUtils(Main plugin) {
+/* 37 */     this.main = plugin;
+/* 38 */     this.playersInMine = new HashMap<>();
+/* 39 */     this.playersUsedMine = Arrays.asList(new Player[0]);
+/* 40 */     this.midnight = Calendar.getInstance();
+/* 41 */     this.midnight.set(11, 0);
+/* 42 */     this.midnight.set(12, 0);
+/* 43 */     this.midnight.set(13, 0);
+/* 44 */     this.midnight.set(14, 1);
+/* 45 */     this.midnight.set(6, this.midnight.get(6) + 1);
+/* 46 */     long tillMidnight = this.midnight.getTimeInMillis() - System.currentTimeMillis() - 1L;
+/* 47 */     this.ticksTillMidnight = tillMidnight / 50L;
+/* 48 */     resetScheduler();
+/* 49 */     countdownScheduler();
+/*    */   }
+/*    */   
+/*    */   private void resetScheduler() {
+/* 53 */     this.main.getServer().getScheduler().runTaskTimer((Plugin)this.main, new Runnable()
+/*    */         {
+/*    */           public void run()
+/*    */           {
+/* 57 */             XPMineUtils.this.playersUsedMine.clear();
+/*    */           }
+/* 59 */         },  this.ticksTillMidnight, 1728000L);
+/*    */   }
+/*    */   
+/*    */   private void countdownScheduler() {
+/* 63 */     this.main.getServer().getScheduler().runTaskTimer((Plugin)this.main, new Runnable()
+/*    */         {
+/*    */           public void run()
+/*    */           {
+/* 67 */             if (!XPMineUtils.this.playersInMine.isEmpty()) {
+/* 68 */               HashMap<Player, Integer> tempPlayers = XPMineUtils.this.playersInMine;
+/* 69 */               for (Player p : tempPlayers.keySet()) {
+/* 70 */                 if (((Integer)tempPlayers.get(p)).intValue() > 1) {
+/* 71 */                   XPMineUtils.this.playersInMine.put(p, Integer.valueOf(((Integer)tempPlayers.get(p)).intValue() - 1));
+/*    */                   continue;
+/*    */                 } 
+/* 74 */                 XPMineUtils.this.playersInMine.remove(p);
+/* 75 */                 XPMineUtils.this.main.getServer().dispatchCommand((CommandSender)XPMineUtils.this.main.getServer().getConsoleSender(), "warp yard " + p.getName());
+/*    */               } 
+/*    */             } 
+/*    */           }
+/* 79 */         }20L, 20L);
+/*    */   }
+/*    */ }
+
+
+/* Location:              C:\Users\Nick\Desktop\KappaKorrectional.jar!\my\mc47y\me\KappaKorrectiona\\utils\XPMineUtils.class
+ * Java compiler version: 16 (60.0)
+ * JD-Core Version:       1.1.3
+ */

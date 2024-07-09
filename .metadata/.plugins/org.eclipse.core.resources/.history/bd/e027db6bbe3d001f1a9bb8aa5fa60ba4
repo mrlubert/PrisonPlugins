@@ -1,0 +1,239 @@
+/*     */ package com.mrlubert.prisoncontrol;
+/*     */ import net.citizensnpcs.api.event.NPCRightClickEvent;
+/*     */ import net.citizensnpcs.api.npc.NPC;
+import net.luckperms.api.LuckPerms;
+import net.luckperms.api.model.group.GroupManager;
+
+import java.util.Arrays;
+import java.util.List;
+
+/*     */ import org.bukkit.Bukkit;
+/*     */ import org.bukkit.ChatColor;
+/*     */ import org.bukkit.GameMode;
+/*     */ import org.bukkit.Material;
+/*     */ import org.bukkit.command.CommandSender;
+/*     */ import org.bukkit.command.ConsoleCommandSender;
+/*     */ import org.bukkit.entity.Player;
+/*     */ import org.bukkit.event.EventHandler;
+/*     */ import org.bukkit.event.Listener;
+import org.bukkit.inventory.ItemStack;
+/*     */ 
+/*     */ 
+/*     */ 
+/*     */ 
+/*     */ 
+/*     */ 
+/*     */ 
+/*     */ 
+/*     */ 
+/*     */ 
+/*     */ 
+/*     */ 
+/*     */ 
+/*     */ 
+/*     */ 
+/*     */ 
+/*     */ 
+/*     */ 
+/*     */ 
+/*     */ 
+/*     */ 
+/*     */ public class NPCRightClick
+/*     */   implements Listener
+/*     */ {
+/*     */   @SuppressWarnings("unused")
+            private Gamble2Utils gamble2Utils;
+            private GambleUtils gambleUtils;
+/*     */   private PrisonPicks main;
+            private List<ItemStack> hoes;
+            private LuckPerms groupManager;
+/*     */   
+/*     */   public NPCRightClick(PrisonPicks plugin) {
+/*  49 */     this.main = plugin;
+/*  50 */     this.gamble2Utils = this.main.gamble2Utils;
+              this.gambleUtils = this.main.gambleUtils;
+              this.hoes = Arrays.asList(new ItemStack[] { (ItemStack)this.gambleUtils.items.get("Phoenix_Hoe"), 
+/*  51 */           (ItemStack)this.gambleUtils.items.get("Turtle_Hoe"), (ItemStack)this.gambleUtils.items.get("Rabbit_Hoe"), 
+/*  52 */           (ItemStack)this.gambleUtils.items.get("Seagull_Hoe"), (ItemStack)this.gambleUtils.items.get("Myra_Hoe") });
+/*     */   }
+/*     */   public static String format(String text) {
+/*  56 */     return ChatColor.translateAlternateColorCodes('&', text);
+/*     */   }
+/*     */   
+
+           public List<String> getGroups(Player base) {
+/* 279 */     GroupManager handler = groupManager.getGroupManager();
+/* 280 */     if (handler == null) {
+/* 281 */       return null;
+/*     */     }
+/* 283 */     return Arrays.asList(handler.getGroup(base.getName()).toString());
+/*     */   }
+@EventHandler
+/*     */   public void onRightClick(NPCRightClickEvent e) {
+/*  60 */     Player p = e.getClicker();
+/*  62 */     NPC npc = e.getNPC();
+              List<String> groups = this.gambleUtils.getGroups(p);
+
+            if (npc.getName().equalsIgnoreCase("Netherite") && p.isSneaking()) {
+/* 192 */       String name = p.getName();
+/*  81 */         ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
+/*  82 */         String command = "crazycrates preview Netherite " + name;
+/*  83 */         Bukkit.dispatchCommand((CommandSender)console, command);
+/*     */     } else
+	         if (npc.getName().equalsIgnoreCase("TestuRLuck") && p.isSneaking()) {
+/* 192 */       String name = p.getName();
+/*  81 */         ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
+/*  82 */         String command = "crazycrates preview Emerald " + name;
+/*  83 */         Bukkit.dispatchCommand((CommandSender)console, command);
+/*     */     } 
+
+/*  63 */     if (npc.getName().equalsIgnoreCase("Netherite") && !p.isSneaking()) {
+/*  64 */       if (!p.getInventory().contains(Material.NETHERITE_INGOT)) {
+/*  65 */         p.sendMessage(format("&0[&5Gambling&0]&r &4You Need An Netherite Ingot To Use This!"));
+/*     */       }
+/*  67 */       else if (p.getInventory().contains(Material.NETHERITE_INGOT)) {
+/*  68 */         int slot = p.getInventory().first(Material.NETHERITE_INGOT);
+/*  69 */         if (p.getInventory().getItem(slot).getAmount() == 1) {
+/*  70 */           if (p.getGameMode() == GameMode.CREATIVE) {
+/*     */           }
+/*     */         }
+/*  76 */         else if (p.getGameMode() != GameMode.CREATIVE) {
+/*  77 */           p.getInventory().getItem(slot).setAmount(p.getInventory().getItem(slot).getAmount() - 1);
+/*     */         } 
+/*  79 */         p.updateInventory();
+/*  80 */         String name = p.getName();
+/*  81 */         ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
+/*  82 */         String command = "crazycrates forceopen Netherite " + name;
+/*  83 */         Bukkit.dispatchCommand((CommandSender)console, command);
+/*     */       } 
+/*  85 */     } else if (npc.getName().equalsIgnoreCase("TestuRLuck") && !p.isSneaking()) {
+	/*  64 */       if (!p.getInventory().contains(Material.EMERALD)) {
+		/*  65 */         p.sendMessage(format("&0[&5Gambling&0]&r &4You Need An Emerald To Use This!"));
+		/*     */       }
+		/*  67 */       else if (p.getInventory().contains(Material.EMERALD)) {
+		/*  68 */         int slot = p.getInventory().first(Material.EMERALD);
+		/*  69 */         if (p.getInventory().getItem(slot).getAmount() == 1) {
+		/*  70 */           if (p.getGameMode() == GameMode.CREATIVE) {
+		/*     */           }
+		/*     */         }
+		/*  76 */         else if (p.getGameMode() != GameMode.CREATIVE) {
+		/*  77 */           p.getInventory().getItem(slot).setAmount(p.getInventory().getItem(slot).getAmount() - 1);
+		/*     */         } 
+		/*  79 */         p.updateInventory();
+		/*  80 */         String name = p.getName();
+		/*  81 */         ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
+		/*  82 */         String command = "crazycrates forceopen Emerald " + name;
+		/*  83 */         Bukkit.dispatchCommand((CommandSender)console, command);
+		/*     */       } 
+		/*  85 */     }
+/*     */   
+               if (npc.getName().equalsIgnoreCase("oisketchio")) {
+/*  82 */       if (p.getInventory().contains(this.hoes.get(3))) {
+/*  83 */         if (groups.contains("Myra") || groups.contains("Phoenix") || groups.contains("Turtle") || 
+/*  84 */           groups.contains("Rabbit") || groups.contains("Seagull")) {
+/*  85 */           p.sendMessage(ChatColor.RED + "You already have Seagull or higher.");
+/*     */           return;
+/*     */         } 
+/*  88 */         int slot = p.getInventory().first(this.hoes.get(3));
+/*  89 */         if (p.getInventory().getItem(slot).getAmount() == 1) {
+/*  90 */           p.getInventory().setItem(slot, null);
+/*     */         } else {
+/*  92 */           p.getInventory().getItem(slot).setAmount(p.getInventory().getItem(slot).getAmount() - 1);
+/*     */         } 
+/*  94 */         p.updateInventory();
+/*  95 */         String s = ((String)this.gambleUtils.commands.get("Seagull")).replace("[user]", p.getName());
+/*  96 */         this.main.getServer().dispatchCommand((CommandSender)this.main.getServer().getConsoleSender(), s);
+/*  97 */         this.main.getServer().dispatchCommand((CommandSender)Bukkit.getConsoleSender(), 
+/*  98 */             "lp user " + p.getName() + " parent add Seagull");
+/*  99 */         p.sendMessage(ChatColor.GREEN + "You have claimed your Seagull rank.");
+/*     */         return;
+/*     */       } 
+/* 102 */       if (p.getInventory().contains(this.hoes.get(2))) {
+/* 103 */         if (groups.contains("Myra") || groups.contains("Phoenix") || groups.contains("Turtle") || 
+/* 104 */           groups.contains("Rabbit")) {
+/* 105 */           p.sendMessage(ChatColor.RED + "You already have Rabbit or higher.");
+/*     */           return;
+/*     */         } 
+/* 108 */         int slot = p.getInventory().first(this.hoes.get(2));
+/* 109 */         if (p.getInventory().getItem(slot).getAmount() == 1) {
+/* 110 */           p.getInventory().setItem(slot, null);
+/*     */         } else {
+/* 112 */           p.getInventory().getItem(slot).setAmount(p.getInventory().getItem(slot).getAmount() - 1);
+/*     */         } 
+/* 114 */         p.updateInventory();
+/* 115 */         String s = ((String)this.gambleUtils.commands.get("Rabbit")).replace("[user]", p.getName());
+/* 116 */         this.main.getServer().dispatchCommand((CommandSender)this.main.getServer().getConsoleSender(), s);
+                  this.main.getServer().dispatchCommand((CommandSender)Bukkit.getConsoleSender(), 
+/*     */             "lp user " + p.getName() + " parent remove Seagull");
+/* 117 */         this.main.getServer().dispatchCommand((CommandSender)Bukkit.getConsoleSender(), 
+/* 118 */             "lp user " + p.getName() + " parent add Rabbit");
+/* 119 */         p.sendMessage(ChatColor.GREEN + "You have claimed your Rabbit rank.");
+/*     */         return;
+/*     */       } 
+/* 122 */       if (p.getInventory().contains(this.hoes.get(1))) {
+/* 123 */         if (groups.contains("Myra") || groups.contains("Phoenix") || groups.contains("Turtle")) {
+/* 124 */           p.sendMessage(ChatColor.RED + "You already have Turtle or higher.");
+/*     */           return;
+/*     */         } 
+/* 127 */         int slot = p.getInventory().first(this.hoes.get(1));
+/* 128 */         if (p.getInventory().getItem(slot).getAmount() == 1) {
+/* 129 */           p.getInventory().setItem(slot, null);
+/*     */         } else {
+/* 131 */           p.getInventory().getItem(slot).setAmount(p.getInventory().getItem(slot).getAmount() - 1);
+/*     */         } 
+/* 133 */         p.updateInventory();
+/* 134 */         String s = ((String)this.gambleUtils.commands.get("Turtle")).replace("[user]", p.getName());
+/* 135 */         this.main.getServer().dispatchCommand((CommandSender)this.main.getServer().getConsoleSender(), s);
+                  this.main.getServer().dispatchCommand((CommandSender)Bukkit.getConsoleSender(), 
+/*     */             "lp user " + p.getName() + " parent remove Rabbit");
+/* 136 */         this.main.getServer().dispatchCommand((CommandSender)Bukkit.getConsoleSender(), 
+/* 137 */             "lp user " + p.getName() + " parent add Turtle");
+/* 138 */         p.sendMessage(ChatColor.GREEN + "You have claimed your Turtle rank.");
+/*     */         return;
+/*     */       } 
+/* 141 */       if (p.getInventory().contains(this.hoes.get(0))) {
+/* 142 */         if (groups.contains("Myra") || groups.contains("Phoenix")) {
+/* 143 */           p.sendMessage(ChatColor.RED + "You already have Phoenix or Higher.");
+/*     */           return;
+/*     */         } 
+/* 146 */         int slot = p.getInventory().first(this.hoes.get(0));
+/* 147 */         if (p.getInventory().getItem(slot).getAmount() == 1) {
+/* 148 */           p.getInventory().setItem(slot, null);
+/*     */         } else {
+/* 150 */           p.getInventory().getItem(slot).setAmount(p.getInventory().getItem(slot).getAmount() - 1);
+/*     */         } 
+/* 152 */         p.updateInventory();
+/* 153 */         String s = ((String)this.gambleUtils.commands.get("Phoenix")).replace("[user]", p.getName());
+/* 154 */         this.main.getServer().dispatchCommand((CommandSender)this.main.getServer().getConsoleSender(), s);
+                  this.main.getServer().dispatchCommand((CommandSender)Bukkit.getConsoleSender(), 
+/*     */             "lp user " + p.getName() + " parent remove Turtle");
+/* 155 */         this.main.getServer().dispatchCommand((CommandSender)Bukkit.getConsoleSender(), 
+/* 156 */             "lp user " + p.getName() + " parent add Phoenix");
+/* 157 */         p.sendMessage(ChatColor.GREEN + "You have claimed your Phoenix rank.");
+/*     */         return;
+/*     */       } 
+/* 160 */       if (p.getInventory().contains(this.hoes.get(4))) {
+/* 161 */         if (groups.contains("Myra")) {
+/* 162 */           p.sendMessage(ChatColor.RED + "You already have Myra.");
+/*     */           return;
+/*     */         } 
+/* 165 */         int slot = p.getInventory().first(this.hoes.get(4));
+/* 166 */         if (p.getInventory().getItem(slot).getAmount() == 1) {
+/* 167 */           p.getInventory().setItem(slot, null);
+/*     */         } else {
+/* 169 */           p.getInventory().getItem(slot).setAmount(p.getInventory().getItem(slot).getAmount() - 1);
+/*     */         } 
+/* 171 */         p.updateInventory();
+/* 172 */         String s = ((String)this.gambleUtils.commands.get("Myra")).replace("[user]", p.getName());
+/* 173 */         this.main.getServer().dispatchCommand((CommandSender)this.main.getServer().getConsoleSender(), s);
+                  this.main.getServer().dispatchCommand((CommandSender)Bukkit.getConsoleSender(), 
+/*     */             "lp user " + p.getName() + " parent remove Phoenix");
+/* 174 */         this.main.getServer().dispatchCommand((CommandSender)Bukkit.getConsoleSender(), 
+/* 175 */             "lp user " + p.getName() + " parent add Myra");
+/* 176 */         p.sendMessage(ChatColor.GREEN + "You have claimed your Myra rank.");
+/*     */         return;
+/*     */       } 
+/*     */     } 
+/*     */   }
+/*     */   
+/*     */ }

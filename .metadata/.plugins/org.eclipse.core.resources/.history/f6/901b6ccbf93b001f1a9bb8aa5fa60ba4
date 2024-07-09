@@ -1,0 +1,58 @@
+/*    */ package my.mc47y.me.KappaKorrectional.events;
+/*    */ 
+/*    */ import my.mc47y.me.KappaKorrectional.Main;
+/*    */ import org.bukkit.entity.Player;
+/*    */ import org.bukkit.event.EventHandler;
+/*    */ import org.bukkit.event.Listener;
+/*    */ import org.bukkit.event.inventory.InventoryClickEvent;
+/*    */ import org.bukkit.event.inventory.InventoryType;
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ public class InventoryClick
+/*    */   implements Listener
+/*    */ {
+/*    */   public InventoryClick(Main plugin) {}
+/*    */   
+/*    */   @EventHandler
+/*    */   public void onInventoryClick(InventoryClickEvent e) {
+/* 31 */     Player p = (Player)e.getWhoClicked();
+/* 32 */     int slot = e.getSlot();
+/* 33 */     if (e.getClickedInventory() == null || e.getClickedInventory().getType() != InventoryType.ENDER_CHEST) {
+/*    */       return;
+/*    */     }
+/* 36 */     if (p.hasPermission("ezprestige.prestige.20")) {
+/*    */       return;
+/*    */     }
+/* 39 */     for (int i = 19; i > 0; ) {
+/* 40 */       if (!p.hasPermission("ezprestige.prestige." + i)) { i--; continue; }
+/* 41 */        if (slot > i) {
+/* 42 */         e.setCancelled(true);
+/*    */         return;
+/*    */       } 
+/*    */       return;
+/*    */     } 
+/* 47 */     if (slot > 0) {
+/* 48 */       e.setCancelled(true);
+/*    */       return;
+/*    */     } 
+/*    */   }
+/*    */ }
+
+
+/* Location:              C:\Users\Nick\Desktop\KappaKorrectional.jar!\my\mc47y\me\KappaKorrectional\events\InventoryClick.class
+ * Java compiler version: 16 (60.0)
+ * JD-Core Version:       1.1.3
+ */
