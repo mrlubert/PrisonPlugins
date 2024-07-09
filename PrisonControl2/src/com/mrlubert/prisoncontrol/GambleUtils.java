@@ -18,7 +18,6 @@ import net.luckperms.api.LuckPerms;
 import net.luckperms.api.model.group.GroupManager;
 
 public class GambleUtils {
-	private Main main;
 	private LuckPerms groupManager;
 	public HashMap<String, ItemStack> items;
 	public HashMap<String, String> commands;
@@ -30,7 +29,6 @@ public class GambleUtils {
 		items = new HashMap<>();
 		commands = new HashMap<>();
 		loadRewardMaps();
-		this.main.getLogger().info("[KappaGamble] Loaded successfully.");
 		Bukkit.getLogger().info("[Kappa] Loaded successfully.");
 		this.prestigeTokened = new HashSet<>(Arrays.asList(new String[0]));
 
