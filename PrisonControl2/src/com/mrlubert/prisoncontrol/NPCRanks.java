@@ -41,12 +41,14 @@ public class NPCRanks implements Listener {
 		ItemStack tHoe = new ItemStack(Material.GOLDEN_HOE);
 		ItemStack rHoe = new ItemStack(Material.GOLDEN_HOE);
 		ItemStack sHoe = new ItemStack(Material.GOLDEN_HOE);
+		ItemStack reHoe = new ItemStack(Material.DIAMOND_HOE);
 		ItemStack prestigeToken = new ItemStack(Material.DIAMOND_HORSE_ARMOR);
 		ItemMeta mM = mHoe.getItemMeta();
 		ItemMeta pM = pHoe.getItemMeta();
 		ItemMeta tM = tHoe.getItemMeta();
 		ItemMeta rM = rHoe.getItemMeta();
 		ItemMeta sM = sHoe.getItemMeta();
+		ItemMeta reM = reHoe.getItemMeta();
 		ItemMeta prestigeM = prestigeToken.getItemMeta();
 		mM.setDisplayName(ChatColor.DARK_AQUA + "[" + ChatColor.GOLD + "Myra" + ChatColor.DARK_AQUA + "]"
 				+ ChatColor.RESET + " UPGRADE");
@@ -58,6 +60,8 @@ public class NPCRanks implements Listener {
 				+ ChatColor.RESET + " UPGRADE");
 		tM.setDisplayName(ChatColor.GOLD + "[" + ChatColor.YELLOW + "Turtle" + ChatColor.GOLD + "]" + ChatColor.RESET
 				+ " UPGRADE");
+		reM.setDisplayName(ChatColor.LIGHT_PURPLE + "[" + ChatColor.WHITE + "Reset" + ChatColor.LIGHT_PURPLE + "]"
+				+ ChatColor.RESET + " UPGRADE");
 		prestigeM.setDisplayName(ChatColor.GREEN + "Prestige Token");
 		ArrayList<String> Lore = new ArrayList<>();
 		ArrayList<String> prestigeLore = new ArrayList<>();
@@ -69,12 +73,14 @@ public class NPCRanks implements Listener {
 		tM.setLore(Lore);
 		rM.setLore(Lore);
 		sM.setLore(Lore);
+		reM.setLore(Lore);
 		prestigeM.setLore(prestigeLore);
 		mHoe.setItemMeta(mM);
 		pHoe.setItemMeta(pM);
 		tHoe.setItemMeta(tM);
 		rHoe.setItemMeta(rM);
 		sHoe.setItemMeta(sM);
+		reHoe.setItemMeta(reM);
 		prestigeM.addEnchant(Enchantment.UNBREAKING, 1, true);
 		prestigeToken.removeEnchantment(Enchantment.UNBREAKING);
 		prestigeToken.setItemMeta(prestigeM);
@@ -83,20 +89,8 @@ public class NPCRanks implements Listener {
 		items.put("Turtle_Hoe", tHoe);
 		items.put("Rabbit_Hoe", rHoe);
 		items.put("Seagull_Hoe", sHoe);
+		items.put("Reset_Hoe", reHoe);
 		items.put("Prestige_Token", prestigeToken);
-		commands.put("Myra", "lp user [user] parent add myra");
-		commands.put("Phoenix", "lp user [user] parent add phoenix");
-		commands.put("Turtle", "lp user [user] parent add turtle");
-		commands.put("Rabbit", "lp user [user] parent add rabbit");
-		commands.put("Seagull", "lp user [user] parent add seagull");
-	}
-
-	public static boolean isPlayerInGroup(Player player, String group) {
-		if (group == null) {
-			return false;
-		}
-		player.sendMessage("Debug: " + group + " Checked Returns: " + player.hasPermission("displayname." + group));
-		return player.hasPermission("displayname." + group);
 	}
 	
 	@EventHandler
@@ -213,6 +207,29 @@ public class NPCRanks implements Listener {
 						"lp user " + p.getName() + " parent remove Seagull");
 				p.setAbsorptionAmount(5);
 				p.sendMessage(ChatColor.GREEN + "You have claimed your Myra rank.");
+				return;
+			}
+			if (p.getInventory().getItemInMainHand().equals(items.get("Reset_Hoe"))) {
+				int slot = p.getInventory().first(items.get("Reset_Hoe"));
+				if (p.getInventory().getItem(slot).getAmount() == 1) {
+					p.getInventory().setItem(slot, null);
+				} else {
+					p.getInventory().getItem(slot).setAmount(0);
+				}
+				p.updateInventory();
+				p.setAbsorptionAmount(0);
+				this.main.getServer().dispatchCommand(Bukkit.getConsoleSender(),
+						"lp user " + p.getName() + " parent remove Myra");
+				this.main.getServer().dispatchCommand(Bukkit.getConsoleSender(),
+						"lp user " + p.getName() + " parent remove Phoenix");
+				this.main.getServer().dispatchCommand(Bukkit.getConsoleSender(),
+						"lp user " + p.getName() + " parent remove Turtle");
+				this.main.getServer().dispatchCommand(Bukkit.getConsoleSender(),
+						"lp user " + p.getName() + " parent remove Rabbit");
+				this.main.getServer().dispatchCommand(Bukkit.getConsoleSender(),
+						"lp user " + p.getName() + " parent remove Seagull");
+				p.setAbsorptionAmount(5);
+				p.sendMessage(ChatColor.GREEN + "You have claimed your Reset rank.");
 				return;
 			}
 		}
