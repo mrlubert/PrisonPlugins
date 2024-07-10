@@ -1,6 +1,7 @@
 package com.mrlubert.prisoncontrol;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -14,16 +15,20 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.npc.NPC;
+import net.luckperms.api.LuckPerms;
+import net.luckperms.api.LuckPermsProvider;
+import net.luckperms.api.model.group.Group;
+import net.luckperms.api.model.user.User;
+import net.luckperms.api.platform.PlayerAdapter;
+import java.util.stream.Collectors;
 
 public class NPCRanks implements Listener {
 	@SuppressWarnings("unused")
 	private Gamble2Utils gamble2Utils;
-	private Main main;
 	public HashMap<String, String> commands;
 	public HashMap<String, ItemStack> items;
 
 	public NPCRanks(Main plugin) {
-		this.main = plugin;
 		this.items = new HashMap<>();
 		commands = new HashMap<>();
 		loadRewardMaps();
@@ -97,12 +102,19 @@ public class NPCRanks implements Listener {
 	public void onRightClick(NPCRightClickEvent e) {
 		Player p = e.getClicker();
 		NPC npc = e.getNPC();
-		int check = (int) p.getAbsorptionAmount();
+		
+		LuckPerms luckPerms = LuckPermsProvider.get();
+		PlayerAdapter<Player> playerAdapter = luckPerms.getPlayerAdapter(Player.class);
+		User user = playerAdapter.getUser(p);
+		Collection<Group> groups = user.getInheritedGroups(playerAdapter.getQueryOptions(p));
+		String groupsString = groups.stream().map(Group::getName).collect(Collectors.joining(", "));
+		
 		if (npc.getName().equalsIgnoreCase("oisketchio")) {
+			p.sendMessage("Debug: Current Groups: " + groupsString);
 			if (p.getInventory().getItemInMainHand().equals(items.get("Seagull_Hoe"))) {
-				if (check == 1 || check == 2 || check == 3 || check == 4 || check == 5) {
+				if (groupsString.toLowerCase().contains("seagull") || groupsString.toLowerCase().contains("rabbit") || groupsString.toLowerCase().contains("turtle") || groupsString.toLowerCase().contains("phoenix") || groupsString.toLowerCase().contains("myra")) {
 					p.sendMessage(ChatColor.RED + "You already have Seagull or higher.");
-					return;
+
 				}
 				int slot = p.getInventory().first(items.get("Seagull_Hoe"));
 				if (p.getInventory().getItem(slot).getAmount() == 1) {
@@ -111,16 +123,15 @@ public class NPCRanks implements Listener {
 					p.getInventory().getItem(slot).setAmount(0);
 				}
 				p.updateInventory();
-				this.main.getServer().dispatchCommand(Bukkit.getConsoleSender(),
+				Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(),
 						"lp user " + p.getName() + " parent add Seagull");
-				p.setAbsorptionAmount(1);
 				p.sendMessage(ChatColor.GREEN + "You have claimed your Seagull rank.");
-				return;
+
 			}
 			if (p.getInventory().getItemInMainHand().equals(items.get("Rabbit_Hoe"))) {
-				if (check == 2 || check == 3 || check == 4 || check == 5) {
+				if (!groupsString.toLowerCase().contains("seagull") || groupsString.toLowerCase().contains("rabbit") || groupsString.toLowerCase().contains("turtle") || groupsString.toLowerCase().contains("phoenix") || groupsString.toLowerCase().contains("myra")) {
 					p.sendMessage(ChatColor.RED + "You already have Rabbit or higher.");
-					return;
+
 				}
 				int slot = p.getInventory().first(items.get("Rabbit_Hoe"));
 				if (p.getInventory().getItem(slot).getAmount() == 1) {
@@ -129,18 +140,17 @@ public class NPCRanks implements Listener {
 					p.getInventory().getItem(slot).setAmount(0);
 				}
 				p.updateInventory();
-				String s = this.commands.get("Rabbit").replace("[user]", p.getName());
-				this.main.getServer().dispatchCommand(this.main.getServer().getConsoleSender(), s);
-				this.main.getServer().dispatchCommand(Bukkit.getConsoleSender(),
+				String s = commands.get("Rabbit").replace("[user]", p.getName());
+				Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), s);
+				Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(),
 						"lp user " + p.getName() + " parent remove Seagull");
-				p.setAbsorptionAmount(2);
 				p.sendMessage(ChatColor.GREEN + "You have claimed your Rabbit rank.");
-				return;
+
 			}
 			if (p.getInventory().getItemInMainHand().equals(items.get("Turtle_Hoe"))) {
-				if (check == 3 || check == 4 || check == 5) {
+				if (!groupsString.toLowerCase().contains("seagull") || !groupsString.toLowerCase().contains("rabbit") || groupsString.toLowerCase().contains("turtle") || groupsString.toLowerCase().contains("phoenix") || groupsString.toLowerCase().contains("myra")) {
 					p.sendMessage(ChatColor.RED + "You already have Turtle or higher.");
-					return;
+
 				}
 				int slot = p.getInventory().first(items.get("Turtle_Hoe"));
 				if (p.getInventory().getItem(slot).getAmount() == 1) {
@@ -149,20 +159,19 @@ public class NPCRanks implements Listener {
 					p.getInventory().getItem(slot).setAmount(0);
 				}
 				p.updateInventory();
-				String s = this.commands.get("Turtle").replace("[user]", p.getName());
-				this.main.getServer().dispatchCommand(this.main.getServer().getConsoleSender(), s);
-				this.main.getServer().dispatchCommand(Bukkit.getConsoleSender(),
+				String s = commands.get("Turtle").replace("[user]", p.getName());
+				Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), s);
+				Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(),
 						"lp user " + p.getName() + " parent remove Rabbit");
-				this.main.getServer().dispatchCommand(Bukkit.getConsoleSender(),
+				Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(),
 						"lp user " + p.getName() + " parent remove Seagull");
-				p.setAbsorptionAmount(3);
 				p.sendMessage(ChatColor.GREEN + "You have claimed your Turtle rank.");
-				return;
+
 			}
 			if (p.getInventory().getItemInMainHand().equals(items.get("Phoenix_Hoe"))) {
-				if (check == 4 || check == 5) {
+				if (!groupsString.toLowerCase().contains("seagull") || !groupsString.toLowerCase().contains("rabbit") || !groupsString.toLowerCase().contains("turtle") || groupsString.toLowerCase().contains("phoenix") || groupsString.toLowerCase().contains("myra")) {
 					p.sendMessage(ChatColor.RED + "You already have Phoenix or Higher.");
-					return;
+
 				}
 				int slot = p.getInventory().first(items.get("Phoenix_Hoe"));
 				if (p.getInventory().getItem(slot).getAmount() == 1) {
@@ -171,22 +180,21 @@ public class NPCRanks implements Listener {
 					p.getInventory().getItem(slot).setAmount(0);
 				}
 				p.updateInventory();
-				String s = this.commands.get("Phoenix").replace("[user]", p.getName());
-				this.main.getServer().dispatchCommand(this.main.getServer().getConsoleSender(), s);
-				this.main.getServer().dispatchCommand(Bukkit.getConsoleSender(),
+				String s = commands.get("Phoenix").replace("[user]", p.getName());
+				Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), s);
+				Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(),
 						"lp user " + p.getName() + " parent remove Turtle");
-				this.main.getServer().dispatchCommand(Bukkit.getConsoleSender(),
+				Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(),
 						"lp user " + p.getName() + " parent remove Rabbit");
-				this.main.getServer().dispatchCommand(Bukkit.getConsoleSender(),
+				Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(),
 						"lp user " + p.getName() + " parent remove Seagull");
-				p.setAbsorptionAmount(4);
 				p.sendMessage(ChatColor.GREEN + "You have claimed your Phoenix rank.");
-				return;
+
 			}
 			if (p.getInventory().getItemInMainHand().equals(items.get("Myra_Hoe"))) {
-				if (check == 5) {
+				if (!groupsString.toLowerCase().contains("seagull") || !groupsString.toLowerCase().contains("rabbit") || !groupsString.toLowerCase().contains("turtle") || !groupsString.toLowerCase().contains("phoenix") || groupsString.toLowerCase().contains("myra")) {
 					p.sendMessage(ChatColor.RED + "You already have Myra.");
-					return;
+
 				}
 				int slot = p.getInventory().first(items.get("Myra_Hoe"));
 				if (p.getInventory().getItem(slot).getAmount() == 1) {
@@ -195,40 +203,31 @@ public class NPCRanks implements Listener {
 					p.getInventory().getItem(slot).setAmount(0);
 				}
 				p.updateInventory();
-				String s = this.commands.get("Myra").replace("[user]", p.getName());
-				this.main.getServer().dispatchCommand(this.main.getServer().getConsoleSender(), s);
-				this.main.getServer().dispatchCommand(Bukkit.getConsoleSender(),
+				String s = commands.get("Myra").replace("[user]", p.getName());
+				Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), s);
+				Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(),
 						"lp user " + p.getName() + " parent remove Phoenix");
-				this.main.getServer().dispatchCommand(Bukkit.getConsoleSender(),
+				Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(),
 						"lp user " + p.getName() + " parent remove Turtle");
-				this.main.getServer().dispatchCommand(Bukkit.getConsoleSender(),
+				Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(),
 						"lp user " + p.getName() + " parent remove Rabbit");
-				this.main.getServer().dispatchCommand(Bukkit.getConsoleSender(),
+				Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(),
 						"lp user " + p.getName() + " parent remove Seagull");
-				p.setAbsorptionAmount(5);
 				p.sendMessage(ChatColor.GREEN + "You have claimed your Myra rank.");
 				return;
 			}
 			if (p.getInventory().getItemInMainHand().equals(items.get("Reset_Hoe"))) {
-				int slot = p.getInventory().first(items.get("Reset_Hoe"));
-				if (p.getInventory().getItem(slot).getAmount() == 1) {
-					p.getInventory().setItem(slot, null);
-				} else {
-					p.getInventory().getItem(slot).setAmount(0);
-				}
-				p.updateInventory();
-				p.setAbsorptionAmount(0);
-				this.main.getServer().dispatchCommand(Bukkit.getConsoleSender(),
+				p.sendMessage(ChatColor.DARK_RED + "Removing The Following Groups: " + groupsString);
+				Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(),
 						"lp user " + p.getName() + " parent remove Myra");
-				this.main.getServer().dispatchCommand(Bukkit.getConsoleSender(),
+				Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(),
 						"lp user " + p.getName() + " parent remove Phoenix");
-				this.main.getServer().dispatchCommand(Bukkit.getConsoleSender(),
+				Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(),
 						"lp user " + p.getName() + " parent remove Turtle");
-				this.main.getServer().dispatchCommand(Bukkit.getConsoleSender(),
+				Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(),
 						"lp user " + p.getName() + " parent remove Rabbit");
-				this.main.getServer().dispatchCommand(Bukkit.getConsoleSender(),
+				Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(),
 						"lp user " + p.getName() + " parent remove Seagull");
-				p.setAbsorptionAmount(5);
 				p.sendMessage(ChatColor.GREEN + "You have claimed your Reset rank.");
 				return;
 			}

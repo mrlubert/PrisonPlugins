@@ -84,13 +84,17 @@ public class KappaKCommand implements CommandExecutor {
 	}
 
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] arguments) {
+        if (arguments[1].toString().toLowerCase().contains("reset")) {
+        	Bukkit.getPlayer(arguments[0].toLowerCase()).getInventory()
+			.addItem(new ItemStack[] { (ItemStack) this.items.get("Reset_Hoe") });
+        }else 
 		if (!(sender instanceof Player)) {
 			if (arguments.length != 2) {
 				this.main.getLogger().info(ChatColor.RED + "Invalid syntax. Use /KappaK [player] [rank]");
 				return false;
 			}
 			if (Bukkit.getOnlinePlayers().contains(Bukkit.getPlayer(arguments[0].toLowerCase()))) {
-				String str;
+				String str; 
 				switch ((str = arguments[1].toLowerCase()).hashCode()) {
 				case -1276224445:
 					if (!str.equals("prestige")) {
@@ -101,13 +105,6 @@ public class KappaKCommand implements CommandExecutor {
 
 					return false;
 					
-				case -12624445:
-					if (!str.equals("reset")) 
-						break;
-					Bukkit.getPlayer(arguments[0].toLowerCase()).setAbsorptionAmount(0);
-					Bukkit.getPlayer(arguments[0].toLowerCase()).getInventory()
-					.addItem(new ItemStack[] { (ItemStack) this.items.get("Reset_Hoe") });
-					return false;
 				case -938645478:
 					if (!str.equals("rabbit"))
 						break;
@@ -164,7 +161,6 @@ public class KappaKCommand implements CommandExecutor {
 				case -12624445:
 					if (!str.equals("reset")) 
 						break;
-					Bukkit.getPlayer(arguments[0].toLowerCase()).setAbsorptionAmount(0);
 					Bukkit.getPlayer(arguments[0].toLowerCase()).getInventory()
 					.addItem(new ItemStack[] { (ItemStack) this.items.get("Reset_Hoe") });
 					return false;

@@ -25,6 +25,7 @@ public class Main extends JavaPlugin implements Listener {
 		getServer().getPluginManager().registerEvents((Listener) this.balanceUpdate, (Plugin) this);
 		getCommand("cell").setExecutor((CommandExecutor) this.cellCmd);
 		getCommand("kappak").setExecutor((CommandExecutor) this.kappaKCmd);
+		
 	}
 
 	public void onDisable() {
