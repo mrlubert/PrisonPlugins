@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Copy 2 elements to &apos;AutoPickup&apos;&#x0D;&#x0A;- Original project: &apos;AutoPickup&apos;&#x0D;&#x0A;- Destination element: &apos;AutoPickup&apos;&#x0D;&#x0A;- Original elements:&#x0D;&#x0A;     permissions.yml&#x0D;&#x0A;     plugin.yml" description="Copy files" destination="=AutoPickup" element1="src/main/resources/permissions.yml" element2="src/main/resources/plugin.yml" files="2" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1720311267954" units="0" version="1.0"/>
-</session>
